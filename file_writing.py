@@ -85,6 +85,23 @@ def write_file(file_name, lst):
         f_writer.writeheader()
         f_writer.writerows(res)
 
+# Выполнение ДЗ 
+# Задача 38: Дополнить телефонный справочник возможностью изменения и удаления данных. 
+# Пользователь также может ввести имя или фамилию, и Вы должны реализовать функционал для изменения и удаления данных
+
+def del_contact_file(file_name):
+    del_id = int(input("Введите номер строки для удаления: "))
+    res = read_file(file_name)
+    for el in res:
+        if res.index(el) == del_id - 2:
+            print(f"Запись №{res.index(el)+2}:")
+            print(*el.values(), " - удалена")
+            res.remove(el)
+    with open(file_name, "w", encoding='utf-8', newline='') as data:
+        f_writer = DictWriter(data, fieldnames=['Имя', 'Фамилия', 'Телефон'])
+        f_writer.writeheader()
+        f_writer.writerows(res)
+
 
 file_name = 'phone.csv'
 
@@ -103,6 +120,11 @@ def main():
                 print("Файл отсутствует. Создайте его")
                 continue
             print(*read_file(file_name))
+        elif command == 'd': #Удаление контакта по вводу порядкового номера строки в файле (вклячая заголовки)
+            if not exists(file_name):
+                print("Файл отсутствует.")
+                continue
+            del_contact_file(file_name)
 
 
 main()
